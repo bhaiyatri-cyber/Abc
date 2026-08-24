@@ -32,10 +32,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: 8.13
+      - name: Make gradlew executable
+        working-directory: ${{ steps.findroot.outputs.project_dir }}
+        run: chmod +x ./gradlew
 
       - name: Generate debug keystore
         run: |
@@ -47,7 +46,7 @@ jobs:
 
       - name: Build APK
         working-directory: ${{ steps.findroot.outputs.project_dir }}
-        run: gradle assembleDebug
+        run: ./gradlew assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
